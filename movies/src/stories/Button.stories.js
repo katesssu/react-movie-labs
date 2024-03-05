@@ -43,5 +43,3 @@ export const Small = {
     label: 'Button',
   },
 };
-
-
