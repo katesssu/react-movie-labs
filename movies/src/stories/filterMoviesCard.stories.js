@@ -10,4 +10,3 @@ export const Basic = () => {
   return <FilterMoviesCard />;
 };
 Basic.storyName = "Default";
-
