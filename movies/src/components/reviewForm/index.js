@@ -103,7 +103,7 @@ const ReviewForm = ({ movie }) => {
         Write a review
       </Typography>
 
-      <Snackbar
+    <Snackbar
         sx={styles.snack}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         open={open}
