@@ -11,18 +11,20 @@ import Drawer from "@mui/material/Drawer";
 import MovieReviews from "../movieReviews";
 
 const root = {
-    display: "flex",
-    justifyContent: "center",
-    flexWrap: "wrap",
-    listStyle: "none",
-    padding: 1.5,
-    margin: 0,
+  display: "flex",
+  justifyContent: "center",
+  flexWrap: "wrap",
+  listStyle: "none",
+  padding: 1.5,
+  margin: 0,
 };
 const chip = { margin: 0.5 };
 
 const MovieDetails = ({ movie }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [recommendations, setRecommendations] = useState([]);
+  const [movieProviders, setMovieProviders] = useState([]);
+
 
   useEffect(() => {
     const fetchRecommendations = async () => {
@@ -31,17 +33,38 @@ const MovieDetails = ({ movie }) => {
           `https://api.themoviedb.org/3/movie/${movie.id}/recommendations?api_key=${process.env.REACT_APP_TMDB_KEY}`
         );
         if (!response.ok) {
-          throw new Error('Failed to fetch recommendations');
+          throw new Error("Failed to fetch recommendations");
         }
         const data = await response.json();
         setRecommendations(data.results);
       } catch (error) {
-        console.error('Error fetching recommendations:', error);
+        console.error("Error fetching recommendations:", error);
+      }
+    };
+
+    fetchRecommendations();
+  }, [movie.id]);
+
+  useEffect(() => {
+    const fetchMovieProviders = async () => {
+      try {
+        const response = await fetch(
+          `https://api.themoviedb.org/3/movie/${movie.id}/watch/providers?api_key=${process.env.REACT_APP_TMDB_KEY}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch movie providers");
+        }
+        const data = await response.json();
+        console.log("Fetched movie providers data:", data);
+        console.log("Type of movieProviders:", typeof data.results);
+        setMovieProviders(data.results);
+      } catch (error) {
+        console.error("Error fetching movie providers:", error);
       }
     };
   
-    fetchRecommendations();
-  }, [movie.id, setRecommendations]);
+    fetchMovieProviders();
+  }, [movie.id]);
   
 
   return (
@@ -54,20 +77,17 @@ const MovieDetails = ({ movie }) => {
         {movie.overview}
       </Typography>
 
-      <Paper 
-        component="ul" 
-        sx={{...root}}
-      >
+      <Paper component="ul" sx={{ ...root }}>
         <li>
-          <Chip label="Genres" sx={{...chip}} color="primary" />
+          <Chip label="Genres" sx={{ ...chip }} color="primary" />
         </li>
         {movie.genres.map((g) => (
           <li key={g.name}>
-            <Chip label={g.name} sx={{...chip}} />
+            <Chip label={g.name} sx={{ ...chip }} />
           </li>
         ))}
       </Paper>
-      <Paper component="ul" sx={{...root}}>
+      <Paper component="ul" sx={{ ...root }}>
         <Chip icon={<AccessTimeIcon />} label={`${movie.runtime} min.`} />
         <Chip
           icon={<MonetizationIcon />}
@@ -82,19 +102,34 @@ const MovieDetails = ({ movie }) => {
       <Fab
         color="secondary"
         variant="extended"
-        onClick={() =>setDrawerOpen(true)}
+        onClick={() => setDrawerOpen(true)}
         sx={{
-          position: 'fixed',
-          bottom: '1em',
-          right: '1em'
+          position: "fixed",
+          bottom: "1em",
+          right: "1em",
         }}
       >
         <NavigationIcon />
         Reviews
       </Fab>
-      <Drawer anchor="top" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
+      <Drawer
+        anchor="top"
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+      >
         <MovieReviews movie={movie} />
       </Drawer>
+
+      {/* Display movie providers */}
+      <Typography variant="h5" component="h3">
+        Movie Watch Providers
+      </Typography>
+      <ul>
+  {Array.isArray(movieProviders) && movieProviders.map((provider) => (
+    <li key={provider.provider_id}>{provider.provider_name}</li>
+  ))}
+</ul>
+
 
       {/* Display recommendations in a grid */}
       <Typography variant="h5" component="h3">
