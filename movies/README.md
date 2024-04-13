@@ -25,24 +25,23 @@ This is a web app using react. The Movies app will communicate with The TMDB API
 
 [ List the __additional__ TMDB endpoints used, giving the description and pathname for each one.] 
 
-e.g.
-+ Discover list of movies - discover/movie
-+ Movie details - movie/:id
-+ Movie genres = /genre/movie/list
++ Movie Favourites - /movies/favorites
++ Upcoming movies - /movies/upcoming
++ Top Rated movies - /movies/toprated
++ Popular movies = /movies/popular
++ Review form - /reviews/form
+
+
 
 ## Routing.
 
 [ List the __new routes__ supported by your app and state the associated page.]
 
-+ /blogs - displays all published blogs.
-+ /blogs/:id - displays a particular blog.
-+ /blogs/:id/comments - detail view of a particular blog and its comments.
-+ etc.
++ /movies/favorites - displays favourited movies
++ /movies/upcoming- displays all upcoming movies
++ /reviews/:id - displays the reviews.
++ /movies/:id - displays all of the discover movies
++ /reviews/form - displays the review form
++ /movies/toprated - displays the top rated movies
++ /movies/popular - displays the popular movies
 
-[If relevant, state what aspects of your app are protected (i.e. require authentication) and what is public.]
-
-## Independent learning (If relevant).
-
-Itemize the technologies/techniques you researched independently and adopted in your project, 
-i.e. aspects not covered in the lectures/labs. Include the source code filenames that illustrate these 
-(we do not require code excerpts) and provide references to the online resources that helped you (articles/blogs).
